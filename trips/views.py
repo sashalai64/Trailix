@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import *
+from .forms import *
 
 # Create your views here.
 def index(request):
@@ -63,3 +64,45 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "trips/register.html")
+
+
+@login_required
+def trips(request):
+    trip_type = request.GET.get('type', 'upcoming')
+    if trip_type == 'previous':
+        return HttpResponseRedirect(reverse('previous_trips'))
+    return HttpResponseRedirect(reverse('upcoming_trips'))
+
+
+@login_required
+def add_trip(request):
+    if request.method == 'POST':
+        form = TripForm(request.POST)
+
+        if form.is_valid():
+            trip = form.save(commit=False)
+            trip.user = request.user
+            location_id = request.POST.get('location')
+            trip.location = Location.objects.get(id = location_id)
+            trip.save()
+            return HttpResponseRedirect(reverse('index'))
+        else:
+            return render(request, "trips/add_trip.html", {
+                "form": form
+            })
+
+    return render(request, 'trips/add_trip.html', {
+        "form": TripForm()
+    })
+
+
+@login_required
+def upcoming_trips(request):
+    # Retrieve and display upcoming trips
+    return render(request, 'trips/upcoming_trips.html')
+
+
+@login_required
+def previous_trips(request):
+    # Retrieve and display previous trips
+    return render(request, 'trips/previous_trips.html')
