@@ -1,10 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
+from django.utils import timezone
+from datetime import datetime
 
 from .models import *
 from .forms import *
@@ -68,41 +70,53 @@ def register(request):
 
 @login_required
 def trips(request):
-    trip_type = request.GET.get('type', 'upcoming')
-    if trip_type == 'previous':
-        return HttpResponseRedirect(reverse('previous_trips'))
-    return HttpResponseRedirect(reverse('upcoming_trips'))
+    trip_type = request.GET.get('type')
+    today = timezone.now().date()
 
+    if trip_type == 'previous':
+        trips = Trip.objects.filter(user = request.user, end_date__lt = today).order_by('-start_date')
+        return render(request, "trips/previous_trips.html", {
+            "trips": trips
+        })
+    
+    elif trip_type == 'upcoming':
+        trips = Trip.objects.filter(user = request.user, end_date__gte = today).order_by('-start_date')
+        return render(request, "trips/upcoming_trips.html", {
+            "trips": trips
+        })
+    
+    else:
+        return HttpResponseRedirect(reverse('index'))
+    
 
 @login_required
 def add_trip(request):
+    today = timezone.now().date()
+
     if request.method == 'POST':
         form = TripForm(request.POST)
 
         if form.is_valid():
             trip = form.save(commit=False)
             trip.user = request.user
-            location_id = request.POST.get('location')
-            trip.location = Location.objects.get(id = location_id)
             trip.save()
-            return HttpResponseRedirect(reverse('index'))
+
+            end_time = request.POST.get('end_date')
+            date_obj = datetime.strptime(end_time , '%Y-%m-%d').date()
+            
+            if date_obj > today:
+                url = reverse('trips') + '?type=upcoming'
+            else:
+                url = reverse('trips') + '?type=previous'
+
+            return redirect(url)
+        
         else:
             return render(request, "trips/add_trip.html", {
                 "form": form
             })
 
     return render(request, 'trips/add_trip.html', {
-        "form": TripForm()
+        "form": TripForm(),
     })
 
-
-@login_required
-def upcoming_trips(request):
-    # Retrieve and display upcoming trips
-    return render(request, 'trips/upcoming_trips.html')
-
-
-@login_required
-def previous_trips(request):
-    # Retrieve and display previous trips
-    return render(request, 'trips/previous_trips.html')
