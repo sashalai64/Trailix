@@ -2,30 +2,30 @@
 
 {% block body %}
 
-    <h2>Previous Trips</h2>
+<h2>Previous Trips</h2>
 
-    <div>
-        <a class="nav-link" href="{% url 'add_trip' %}">Add Trip</a>
-    </div>
+<div>
+    <a class="nav-link" href="{% url 'add_trip' %}">Add Trips</a>
+</div>
 
-    <div class="container mt-5">
-        <div class="row">
-            {% for trip in trips %}
-                <div class="col-md-12 mb-4">
-                    <div class="card shadow-sm">
-                        <div class="row no-gutters">
-                            <div class="col-md-8">
-                                <div class="card-body">
-                                    <h3 class="card-title">{{ trip.location }}</h5>
-                                    <p class="card-text mt-3">Start: {{ trip.start_date }}</p>
-                                    <p class="card-text mt-3">End: {{ trip.end_date }}</p>
-                                </div>
+<div class="container mt-5">
+    <div class="row">
+        {% for trip in trips %}
+            <div class="col-md-12 mb-4">
+                <div class="card shadow-sm">
+                    <div class="row no-gutters">
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h3 class="card-title">{{ trip.location }}</h5>
+                                <p class="card-text mt-3">Start: {{ trip.start_date }}</p>
+                                <p class="card-text mt-3">End: {{ trip.end_date }}</p>
                             </div>
                         </div>
                     </div>
                 </div>
-            {% endfor %}
-        </div>
+            </div>
+        {% endfor %}
     </div>
+</div>
 
 {% endblock %}

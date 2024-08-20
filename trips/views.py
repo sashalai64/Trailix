@@ -11,7 +11,9 @@ from datetime import datetime
 from .models import *
 from .forms import *
 
-# Create your views here.
+
+today = timezone.now().date()
+
 def index(request):
     return render(request, "trips/index.html")
 
@@ -72,27 +74,28 @@ def register(request):
 def trips(request):
     trip_type = request.GET.get('type')
     today = timezone.now().date()
+    previous_trips = Trip.objects.filter(user = request.user, end_date__lt = today).order_by('-start_date')
+    upcoming_trips = Trip.objects.filter(user = request.user, end_date__gte = today).order_by('-start_date')
 
     if trip_type == 'previous':
-        trips = Trip.objects.filter(user = request.user, end_date__lt = today).order_by('-start_date')
         return render(request, "trips/previous_trips.html", {
-            "trips": trips
+            "previous_trips": previous_trips
         })
     
     elif trip_type == 'upcoming':
-        trips = Trip.objects.filter(user = request.user, end_date__gte = today).order_by('-start_date')
         return render(request, "trips/upcoming_trips.html", {
-            "trips": trips
+            "upcoming_trips": upcoming_trips
         })
     
     else:
-        return HttpResponseRedirect(reverse('index'))
+        return render(request, "trips/all_trips.html", {
+            "upcoming_trips": upcoming_trips,
+            "previous_trips": previous_trips
+        })
     
 
 @login_required
 def add_trip(request):
-    today = timezone.now().date()
-
     if request.method == 'POST':
         form = TripForm(request.POST)
 
@@ -102,9 +105,9 @@ def add_trip(request):
             trip.save()
 
             end_time = request.POST.get('end_date')
-            date_obj = datetime.strptime(end_time , '%Y-%m-%d').date()
+            date = datetime.strptime(end_time , '%Y-%m-%d').date()
             
-            if date_obj > today:
+            if date > today:
                 url = reverse('trips') + '?type=upcoming'
             else:
                 url = reverse('trips') + '?type=previous'

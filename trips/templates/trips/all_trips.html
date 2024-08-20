@@ -1,0 +1,53 @@
+{% extends "trips/layout.html" %}
+
+{% block body %}
+
+<div>
+    <a class="nav-link" href="{% url 'add_trip' %}">Add Trips</a>
+</div>
+
+<h2>Upcoming Trips</h2>
+
+<div class="container mt-5">
+    <div class="row">
+        {% for upcoming in upcoming_trips %}
+            <div class="col-md-12 mb-4">
+                <div class="card shadow-sm">
+                    <div class="row no-gutters">
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h3 class="card-title">{{ upcoming.location }}</h5>
+                                <p class="card-text mt-3">Start: {{ upcoming.start_date }}</p>
+                                <p class="card-text mt-3">End: {{ upcoming.end_date }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<h2>Previous Trips</h2>
+
+<div class="container mt-5">
+    <div class="row">
+        {% for previous in previous_trips %}
+            <div class="col-md-12 mb-4">
+                <div class="card shadow-sm">
+                    <div class="row no-gutters">
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h3 class="card-title">{{ previous.location }}</h5>
+                                <p class="card-text mt-3">Start: {{ previous.start_date }}</p>
+                                <p class="card-text mt-3">End: {{ previous.end_date }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

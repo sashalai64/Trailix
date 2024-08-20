@@ -1,5 +1,46 @@
 {% extends "trips/layout.html" %}
 
 {% block body %}
-ToDo
+
+<div class="welcome-hero text-center">
+    <div class="hero-content">
+        <h1 class="display-4">Welcome to Trailix</h1>
+        <p class="lead">Your journey starts here. Log in to start planning your next adventure!</p>
+        <div class="mt-4">
+            {% if not user.is_authenticated %}
+                <a href="{% url 'login' %}" class="btn btn-primary btn-lg">Log In</a>
+                <a href="{% url 'register' %}" class="btn btn-secondary btn-lg">Register</a>
+            {% else %}
+                <a href="{% url 'trips' %}" class="btn btn-primary btn-lg">View Your Trips</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="container mt-10 text-center">
+    <h2>Why Plan with Trailix?</h2>
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="feature-box">
+                
+                <h4 class="mt-3">Adventure Awaits</h4>
+                <p>Explore new destinations and relive your previous adventures. Trailix helps you organize your journeys.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-box">
+            
+                <h4 class="mt-3">Easy to Use</h4>
+                <p>Planning and tracking your trips is seamless with our user-friendly interface.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-box">
+                <h4 class="mt-3">Capture Memories</h4>
+                <p>Store and revisit memories from all your past trips. Keep everything in one place.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
