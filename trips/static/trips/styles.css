@@ -77,9 +77,14 @@
 }
 
 .btn-custom:hover{
-    background-color: darkslategrey;
+    background-color: cornflowerblue;
 }
 
 .btn-view {
-    background-color: navajowhite;
+    background-color:aliceblue;
+    transition: background-color 0.3s ease;
+}
+
+.btn-view:hover{
+    background-color: lightblue;
 }
