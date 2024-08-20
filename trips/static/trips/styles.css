@@ -1,18 +1,23 @@
 .navbar {
     margin-bottom: 20px;
 }
+
 .navbar-brand {
     font-weight: bold;
 }
+
 .navbar-nav .nav-link {
     margin-right: 15px;
 }
+
 .navbar-nav .nav-link:last-child {
     margin-right: 0;
 }
+
 .body {
     padding: 20px;
 }
+
 .body .container {
     max-width: 960px;
     margin: 0 auto;
@@ -50,7 +55,7 @@
 .welcome-hero .hero-content {
     max-width: 700px;
     margin: 0 auto;
-    background: darkgrey;
+    background: cadetblue;
     padding: 30px;
     border-radius: 15px;
 }
@@ -58,4 +63,23 @@
 .feature-box {
     text-align: center;
     margin-bottom: 30px;
+}
+
+.btn-custom {
+    background-color: cadetblue;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    margin-bottom: 30px;
+}
+
+.btn-custom:hover{
+    background-color: darkslategrey;
+}
+
+.btn-view {
+    background-color: navajowhite;
 }

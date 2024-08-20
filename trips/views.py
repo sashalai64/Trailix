@@ -102,16 +102,14 @@ def add_trip(request):
         if form.is_valid():
             trip = form.save(commit=False)
             trip.user = request.user
-            trip.save()
+            trip.save() 
 
-            end_time = request.POST.get('end_date')
-            date = datetime.strptime(end_time , '%Y-%m-%d').date()
-            
-            if date > today:
+            end_time = trip.end_date  
+            if end_time > today:
                 url = reverse('trips') + '?type=upcoming'
             else:
                 url = reverse('trips') + '?type=previous'
-
+            
             return redirect(url)
         
         else:
@@ -122,4 +120,5 @@ def add_trip(request):
     return render(request, 'trips/add_trip.html', {
         "form": TripForm(),
     })
+
 
