@@ -77,16 +77,14 @@ def trips(request):
     previous_trips = Trip.objects.filter(user = request.user, end_date__lt = today).order_by('-start_date')
     upcoming_trips = Trip.objects.filter(user = request.user, end_date__gte = today).order_by('-start_date')
 
-    if trip_type == 'previous':
+    if trip_type == 'upcoming':
+        return render(request, "trips/upcoming_trips.html", {
+            "upcoming_trips": upcoming_trips,
+        })
+    elif trip_type == 'previous':
         return render(request, "trips/previous_trips.html", {
             "previous_trips": previous_trips
         })
-    
-    elif trip_type == 'upcoming':
-        return render(request, "trips/upcoming_trips.html", {
-            "upcoming_trips": upcoming_trips
-        })
-    
     else:
         return render(request, "trips/all_trips.html", {
             "upcoming_trips": upcoming_trips,

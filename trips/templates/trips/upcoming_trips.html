@@ -11,14 +11,18 @@
 <div class="container mt-5">
     <div class="row">
         {% for upcoming in upcoming_trips %}
-            <div class="col-md-12 mb-4">
+            <div class="col-md-12 mb-4" data-trip-id="{{ upcoming.id }}" data-trip-start="{{ upcoming.start_date }}">
                 <div class="card shadow-sm">
                     <div class="row no-gutters">
                         <div class="col-md-8">
                             <div class="card-body">
                                 <h3 class="card-title">{{ upcoming.location }}</h5>
-                                <p class="card-text mt-3">Start: {{ upcoming.start_date }}</p>
-                                <p class="card-text mt-3">End: {{ upcoming.end_date }}</p>
+                                <p class="card-text mt-3">{{ upcoming.start_date }} - {{ upcoming.end_date }}</p>
+                                <p class="card-text mt-3">{{ upcoming.notes }}</p>
+
+                                <h5 class="card-text countdown-text mt-3">
+                                    Time left until trip: <span id="countdown-{{ upcoming.id }}"></span>
+                                </h5>
                             </div>
                         </div>
                     </div>
@@ -27,5 +31,6 @@
         {% endfor %}
     </div>
 </div>
+
 
 {% endblock %}
