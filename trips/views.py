@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
-from datetime import datetime
+import requests
+from django.conf import settings
 
 from .models import *
 from .forms import *
@@ -120,3 +121,20 @@ def add_trip(request):
     })
 
 
+def get_cities(request):
+    country_code = request.GET.get('country_code')
+    query = request.GET.get('query')
+
+    if not country_code or not query:
+        return JsonResponse({'error': 'Country code and query are required'}, status=400)
+
+    api_key = settings.RAPID_GEODB_API_KEY
+    url = f'https://wft-geo-db.p.rapidapi.com/v1/geo/countries/{country_code}/places'
+    querystring = {"namePrefix": query}
+    headers = {
+        'x-rapidapi-key': api_key,
+        'x-rapidapi-host': 'wft-geo-db.p.rapidapi.com'
+    }
+
+    response = requests.get(url, headers=headers, params=querystring)
+    return JsonResponse(response.json())

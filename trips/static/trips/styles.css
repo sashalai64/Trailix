@@ -1,3 +1,4 @@
+/* Basic layout styles */
 .navbar {
     margin-bottom: 20px;
 }
@@ -23,6 +24,7 @@
     margin: 0 auto;
 }
 
+/* Card styles */
 .card {
     transition: transform 0.3s ease;
     border-radius: 2ex;
@@ -40,10 +42,12 @@
     color: #555;
 }
 
+/* Container width */
 .container {
     max-width: 1200px;
 }
 
+/* Hero section styles */
 .welcome-hero {
     background-size: cover;
     background-position: center;
@@ -60,11 +64,13 @@
     border-radius: 15px;
 }
 
+/* Feature box */
 .feature-box {
     text-align: center;
     margin-bottom: 30px;
 }
 
+/* Button styles */
 .btn-custom {
     background-color: cadetblue;
     border: none;
@@ -76,15 +82,35 @@
     margin-bottom: 30px;
 }
 
-.btn-custom:hover{
+.btn-custom:hover {
     background-color: cornflowerblue;
 }
 
 .btn-view {
-    background-color:aliceblue;
+    background-color: aliceblue;
     transition: background-color 0.3s ease;
 }
 
-.btn-view:hover{
+.btn-view:hover {
     background-color: lightblue;
+}
+
+/* Suggestions box */
+.suggestions-box {
+    border: 1px solid #ccc;
+    background-color: white;
+    position: absolute;
+    z-index: 1000;
+    max-height: 200px;
+    overflow-y: auto;
+    width: 100%;
+}
+
+.suggestion-item {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.suggestion-item:hover {
+    background-color: #f0f0f0;
 }

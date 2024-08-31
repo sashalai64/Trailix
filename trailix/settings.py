@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv, find_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,7 +22,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-3gnu(lg7@wx%^j1_(w#0es1s^klsw&=u%%jev@8^dcz$m5&-z8"
+load_dotenv(find_dotenv())
+SECRET_KEY = os.environ['SECRET_KEY']
+RAPID_GEODB_API_KEY = os.environ['RAPID_GEODB_API_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
