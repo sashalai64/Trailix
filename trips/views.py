@@ -8,6 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 import requests
 from django.conf import settings
+from django.core.cache import cache
 
 from .models import *
 from .forms import *
@@ -84,13 +85,20 @@ def trips(request):
 
     weather_data = {}
     for trip in all_trips:
-        querystring = {"location": trip.city, "format": "json", "u": "c"}
-        headers = {
-            "x-rapidapi-key": api_key,
-            "x-rapidapi-host": "yahoo-weather5.p.rapidapi.com"
-        }
-        response = requests.get(url, headers=headers, params=querystring)
-        weather = response.json()
+        cache_key = f"weather_{trip.city}"
+        weather = cache.get(cache_key)
+
+        if not weather:
+            querystring = {"location": trip.city, "format": "json", "u": "c"}
+            headers = {
+                "x-rapidapi-key": api_key,
+                "x-rapidapi-host": "yahoo-weather5.p.rapidapi.com"
+            }
+            response = requests.get(url, headers=headers, params=querystring)
+            weather = response.json()
+
+            # Cache the result for 30 minutes
+            cache.set(cache_key, weather, timeout=1800)
 
         try:
             if 'current_observation' in weather:
@@ -101,7 +109,7 @@ def trips(request):
                 condition_code = None
                 temperature = None
                 condition_text = "N/A"
-                
+
         except (KeyError, ValueError) as e:
             # If there's an error parsing the response, set to None or N/A
             condition_code = None

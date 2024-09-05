@@ -99,9 +99,9 @@
 .weather-info {
     margin: 20px 0;
     padding: 10px;
-    border: 1px solid #ecf0f1;
+    border: 1px solid #b4e7f4;
     border-radius: 5px;
-    background-color: #ecf0f1;
+    background-color: #b5e7f3;
     display: flex;
     justify-content: center; /* Center content horizontally */
     align-items: center;
@@ -110,9 +110,8 @@
 .weather-info p {
     margin: 0;
     font-size: 18px;
-    color: #34495e;
+    color: #bdbec0;
 }
-
 
 /* Countdown text */
 .countdown-text {

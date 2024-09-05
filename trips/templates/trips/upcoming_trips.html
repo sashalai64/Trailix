@@ -26,20 +26,22 @@
                                 {% if weather_data %}
                                     {% with weather_data|get_item:upcoming.id as weather %}
                                         {% if weather %}
-                                            <div class="weather-info">
-                                                <p class="mt-2">                                        
-                                                    {% if weather.condition_code %}
-                                                        <i class="wi wi-yahoo-{{ weather.condition_code }}"></i>
-                                                    {% else %}
-                                                        <i class="wi wi-yahoo-3200"></i>
-                                                    {% endif %}
-                                                    
-                                                    <span>{{ weather.condition_text|default:"N/A" }}</span>
-                                                    <span>{{ weather.temperature|default:"N/A" }}°C</span>                                           
-                                                </p>
+                                            <div class="weather-info d-flex justify-content-center align-items-center flex-column mt-4">
+                                                    <p class="mt-2">                                        
+                                                        {% if weather.condition_code %}
+                                                            <i class="wi wi-yahoo-{{ weather.condition_code }}"></i>
+                                                        {% else %}
+                                                            <i class="wi wi-yahoo-3200"></i>
+                                                        {% endif %}
+                                                        
+                                                        <span>{{ weather.condition_text|default:"N/A" }}</span>
+                                                                                                   
+                                                    </p>
+                                                    <p>{{ weather.temperature|default:"N/A" }}°C</p>
+                                               
                                             </div>
                                         {% else %}
-                                            <p>No weather data available.</p>
+                                            <p class="mt-2">No weather data available.</p>
                                         {% endif %}
                                     {% endwith %}
                                 {% endif %}
