@@ -8,5 +8,5 @@ urlpatterns = [
     path("register/", views.register, name="register"),
     path("trips/", views.trips, name="trips"),
     path("add-trip/", views.add_trip, name="add_trip"),
-    path('get-cities/', views.get_cities, name='get_cities'),
+    path("get-cities/", views.get_cities, name="get_cities"),
 ]

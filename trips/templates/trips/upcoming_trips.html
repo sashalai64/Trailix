@@ -1,5 +1,7 @@
 {% extends "trips/layout.html" %}
 
+{% load custom_filters%}
+
 {% block body %}
 
 <div>
@@ -20,6 +22,27 @@
                                 <h6 class="card-title">{{ upcoming.city }}</h6>
                                 <p class="card-text mt-3">{{ upcoming.start_date }} - {{ upcoming.end_date }}</p>
                                 <p class="card-text mt-3">{{ upcoming.notes }}</p>
+
+                                {% if weather_data %}
+                                    {% with weather_data|get_item:upcoming.id as weather %}
+                                        {% if weather %}
+                                            <div class="weather-info">
+                                                <p class="mt-2">                                        
+                                                    {% if weather.condition_code %}
+                                                        <i class="wi wi-yahoo-{{ weather.condition_code }}"></i>
+                                                    {% else %}
+                                                        <i class="wi wi-yahoo-3200"></i>
+                                                    {% endif %}
+                                                    
+                                                    <span>{{ weather.condition_text|default:"N/A" }}</span>
+                                                    <span>{{ weather.temperature|default:"N/A" }}°C</span>                                           
+                                                </p>
+                                            </div>
+                                        {% else %}
+                                            <p>No weather data available.</p>
+                                        {% endif %}
+                                    {% endwith %}
+                                {% endif %}
 
                                 <h5 class="card-text countdown-text mt-3">
                                     Time left until trip: <span id="countdown-{{ upcoming.id }}"></span>

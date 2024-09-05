@@ -75,16 +75,54 @@ def register(request):
 def trips(request):
     trip_type = request.GET.get('type')
     today = timezone.now().date()
+    all_trips = Trip.objects.all().order_by('-start_date')
     previous_trips = Trip.objects.filter(user = request.user, end_date__lt = today).order_by('-start_date')
     upcoming_trips = Trip.objects.filter(user = request.user, end_date__gte = today).order_by('-start_date')
+    
+    api_key = settings.RAPID_WEATHER_API_KEY
+    url = "https://yahoo-weather5.p.rapidapi.com/weather"
+
+    weather_data = {}
+    for trip in all_trips:
+        querystring = {"location": trip.city, "format": "json", "u": "c"}
+        headers = {
+            "x-rapidapi-key": api_key,
+            "x-rapidapi-host": "yahoo-weather5.p.rapidapi.com"
+        }
+        response = requests.get(url, headers=headers, params=querystring)
+        weather = response.json()
+
+        try:
+            if 'current_observation' in weather:
+                    condition_code = weather['current_observation']['condition'].get('code', None)
+                    temperature = weather['current_observation']['condition'].get('temperature', None)
+                    condition_text = weather['current_observation']['condition'].get('text', "N/A")
+            else:
+                condition_code = None
+                temperature = None
+                condition_text = "N/A"
+                
+        except (KeyError, ValueError) as e:
+            # If there's an error parsing the response, set to None or N/A
+            condition_code = None
+            temperature = None
+            condition_text = "N/A"
+
+        weather_data[trip.id] = {
+            'condition_code': condition_code,
+            'temperature': temperature,
+            'condition_text': condition_text
+        }
 
     if trip_type == 'upcoming':
         return render(request, "trips/upcoming_trips.html", {
             "upcoming_trips": upcoming_trips,
+            "weather_data": weather_data
         })
     elif trip_type == 'previous':
         return render(request, "trips/previous_trips.html", {
-            "previous_trips": previous_trips
+            "previous_trips": previous_trips,
+            "weather_data": weather_data
         })
     else:
         return render(request, "trips/all_trips.html", {
