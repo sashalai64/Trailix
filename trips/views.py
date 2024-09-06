@@ -77,27 +77,33 @@ def get_weather(trips):
     url = "https://yahoo-weather5.p.rapidapi.com/weather"
 
     weather_data = {}
+    fetched_cities = {}  # Track already fetched cities' weather data
+    
     for trip in trips:
-        cache_key = f"weather_{trip.city}"
-        weather = cache.get(cache_key)
+        if trip.city not in fetched_cities:
+            cache_key = f"weather_{trip.city}"
+            weather = cache.get(cache_key)
 
-        if not weather:
-            querystring = {"location": trip.city, "format": "json", "u": "c"}
-            headers = {
-                "x-rapidapi-key": api_key,
-                "x-rapidapi-host": "yahoo-weather5.p.rapidapi.com"
-            }
+            if not weather:
+                querystring = {"location": trip.city, "format": "json", "u": "c"}
+                headers = {
+                    "x-rapidapi-key": api_key,
+                    "x-rapidapi-host": "yahoo-weather5.p.rapidapi.com"
+                }
 
-            try:
-                response = requests.get(url, headers=headers, params=querystring)
-                response.raise_for_status()  # Raises an HTTPError if the status is 4xx or 5xx
-                weather = response.json()
-                cache.set(cache_key, weather, timeout=1800)  # Cache for 30 minutes
+                try:
+                    response = requests.get(url, headers=headers, params=querystring)
+                    response.raise_for_status()
+                    weather = response.json()
+                    cache.set(cache_key, weather, timeout=1800) # Cache for 30 minutes
 
-            except requests.exceptions.RequestException as e:
-                # Log the error (optional) and provide a fallback
-                print(f"Error fetching weather data for {trip.city}: {e}")
-                weather = {}
+                except requests.exceptions.RequestException as e:
+                    print(f"Error fetching weather data for {trip.city}: {e}")
+                    weather = {}
+
+            fetched_cities[trip.city] = weather  # Store the fetched weather data for reuse
+        else:
+            weather = fetched_cities[trip.city]
 
         # Parse weather data
         try:
@@ -111,7 +117,6 @@ def get_weather(trips):
                 condition_text = "N/A"
 
         except (KeyError, ValueError) as e:
-            # If there's an error parsing the response, set to None or N/A
             condition_code = None
             temperature = None
             condition_text = "N/A"
