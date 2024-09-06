@@ -38,6 +38,14 @@
     font-weight: bold;
 }
 
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
 .card-text {
     color: #555;
 }
@@ -97,21 +105,26 @@
 
 /* Weather info styles */
 .weather-info {
-    margin: 20px 0;
+    margin: 20px auto;
     padding: 10px;
-    border: 1px solid #b4e7f4;
+    border: 1px solid #ecf0f1;
     border-radius: 5px;
-    background-color: #b5e7f3;
+    background-color: #ecf0f1;
     display: flex;
-    justify-content: center; /* Center content horizontally */
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
+    text-align: center;
+    max-width: 300px;
+    width: 100%;
 }
 
 .weather-info p {
-    margin: 0;
+    margin: 5px 0; /* Adjust margin for better spacing */
     font-size: 18px;
-    color: #bdbec0;
+    color: #576889;
 }
+
 
 /* Countdown text */
 .countdown-text {

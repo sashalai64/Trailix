@@ -15,36 +15,33 @@
         {% for previous in previous_trips %}
             <div class="col-md-12 mb-4">
                 <div class="card shadow-sm">
-                    <div class="row no-gutters">
+                    <div class="row no-gutters justify-content-center"> <!-- Added justify-content-center -->
                         <div class="col-md-8">
-                            <div class="card-body">
+                            <div class="card-body text-center"> <!-- Added text-center to align contents -->
                                 <h3 class="card-title">{{ previous.country }}</h3>
                                 <h6 class="card-title">{{ previous.city }}</h6>
                                 <p class="card-text mt-3">{{ previous.start_date }} - {{ previous.end_date }}</p>
                                 <p class="card-text mt-3">{{ previous.notes }}</p>
-
+            
                                 {% if weather_data %}
                                     {% with weather_data|get_item:previous.id as weather %}
                                         {% if weather %}
-                                            <div class="weather-info">
-                                                <p class="mt-2">                                        
+                                            <div class="weather-info mt-4">
+                                                <p class="mt-2">
                                                     {% if weather.condition_code %}
                                                         <i class="wi wi-yahoo-{{ weather.condition_code }}"></i>
                                                     {% else %}
                                                         <i class="wi wi-yahoo-3200"></i>
                                                     {% endif %}
-                                                    
-                                                    <span>{{ weather.condition_text|default:"N/A" }}</span>        
-                                                    <span>{{ weather.temperature|default:"N/A" }}°C</span>                             
+                                                    <span>{{ weather.condition_text|default:"N/A" }}</span>
                                                 </p>
-                                                      
+                                                <p>{{ weather.temperature|default:"N/A" }}°C</p>
                                             </div>
                                         {% else %}
-                                            <p>No weather data available.</p>
+                                            <p class="mt-2">No weather data available.</p>
                                         {% endif %}
                                     {% endwith %}
                                 {% endif %}
-
                             </div>
                         </div>
                     </div>

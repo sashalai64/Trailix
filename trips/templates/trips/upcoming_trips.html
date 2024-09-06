@@ -15,37 +15,34 @@
         {% for upcoming in upcoming_trips %}
             <div class="col-md-12 mb-4" data-trip-id="{{ upcoming.id }}" data-trip-start="{{ upcoming.start_date }}">
                 <div class="card shadow-sm">
-                    <div class="row no-gutters">
+                    <div class="row no-gutters justify-content-center"> <!-- Added justify-content-center -->
                         <div class="col-md-8">
-                            <div class="card-body">
+                            <div class="card-body text-center"> <!-- Added text-center to align contents -->
                                 <h3 class="card-title">{{ upcoming.country }}</h3>
                                 <h6 class="card-title">{{ upcoming.city }}</h6>
                                 <p class="card-text mt-3">{{ upcoming.start_date }} - {{ upcoming.end_date }}</p>
                                 <p class="card-text mt-3">{{ upcoming.notes }}</p>
-
+            
                                 {% if weather_data %}
                                     {% with weather_data|get_item:upcoming.id as weather %}
                                         {% if weather %}
-                                            <div class="weather-info d-flex justify-content-center align-items-center flex-column mt-4">
-                                                    <p class="mt-2">                                        
-                                                        {% if weather.condition_code %}
-                                                            <i class="wi wi-yahoo-{{ weather.condition_code }}"></i>
-                                                        {% else %}
-                                                            <i class="wi wi-yahoo-3200"></i>
-                                                        {% endif %}
-                                                        
-                                                        <span>{{ weather.condition_text|default:"N/A" }}</span>
-                                                                                                   
-                                                    </p>
-                                                    <p>{{ weather.temperature|default:"N/A" }}°C</p>
-                                               
+                                            <div class="weather-info mt-4">
+                                                <p class="mt-2">
+                                                    {% if weather.condition_code %}
+                                                        <i class="wi wi-yahoo-{{ weather.condition_code }}"></i>
+                                                    {% else %}
+                                                        <i class="wi wi-yahoo-3200"></i>
+                                                    {% endif %}
+                                                    <span>{{ weather.condition_text|default:"N/A" }}</span>
+                                                </p>
+                                                <p>{{ weather.temperature|default:"N/A" }}°C</p>
                                             </div>
                                         {% else %}
                                             <p class="mt-2">No weather data available.</p>
                                         {% endif %}
                                     {% endwith %}
                                 {% endif %}
-
+                                
                                 <h5 class="card-text countdown-text mt-3">
                                     Time left until trip: <span id="countdown-{{ upcoming.id }}"></span>
                                 </h5>

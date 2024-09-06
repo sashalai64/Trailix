@@ -72,19 +72,12 @@ def register(request):
         return render(request, "trips/register.html")
 
 
-@login_required
-def trips(request):
-    trip_type = request.GET.get('type')
-    today = timezone.now().date()
-    all_trips = Trip.objects.all().order_by('-start_date')
-    previous_trips = Trip.objects.filter(user = request.user, end_date__lt = today).order_by('-start_date')
-    upcoming_trips = Trip.objects.filter(user = request.user, end_date__gte = today).order_by('-start_date')
-    
+def get_weather(trips):
     api_key = settings.RAPID_WEATHER_API_KEY
     url = "https://yahoo-weather5.p.rapidapi.com/weather"
 
     weather_data = {}
-    for trip in all_trips:
+    for trip in trips:
         cache_key = f"weather_{trip.city}"
         weather = cache.get(cache_key)
 
@@ -94,17 +87,24 @@ def trips(request):
                 "x-rapidapi-key": api_key,
                 "x-rapidapi-host": "yahoo-weather5.p.rapidapi.com"
             }
-            response = requests.get(url, headers=headers, params=querystring)
-            weather = response.json()
 
-            # Cache the result for 30 minutes
-            cache.set(cache_key, weather, timeout=1800)
+            try:
+                response = requests.get(url, headers=headers, params=querystring)
+                response.raise_for_status()  # Raises an HTTPError if the status is 4xx or 5xx
+                weather = response.json()
+                cache.set(cache_key, weather, timeout=1800)  # Cache for 30 minutes
 
+            except requests.exceptions.RequestException as e:
+                # Log the error (optional) and provide a fallback
+                print(f"Error fetching weather data for {trip.city}: {e}")
+                weather = {}
+
+        # Parse weather data
         try:
             if 'current_observation' in weather:
-                    condition_code = weather['current_observation']['condition'].get('code', None)
-                    temperature = weather['current_observation']['condition'].get('temperature', None)
-                    condition_text = weather['current_observation']['condition'].get('text', "N/A")
+                condition_code = weather['current_observation']['condition'].get('code', None)
+                temperature = weather['current_observation']['condition'].get('temperature', None)
+                condition_text = weather['current_observation']['condition'].get('text', "N/A")
             else:
                 condition_code = None
                 temperature = None
@@ -116,21 +116,35 @@ def trips(request):
             temperature = None
             condition_text = "N/A"
 
+        # Store parsed weather data in the dictionary
         weather_data[trip.id] = {
             'condition_code': condition_code,
             'temperature': temperature,
             'condition_text': condition_text
         }
 
+    return weather_data
+
+
+@login_required
+def trips(request):
+    trip_type = request.GET.get('type')
+    today = timezone.now().date()
+    previous_trips = Trip.objects.filter(user = request.user, end_date__lt = today).order_by('-start_date')
+    upcoming_trips = Trip.objects.filter(user = request.user, end_date__gte = today).order_by('-start_date')
+    
+    upcoming_weather_data = get_weather(upcoming_trips)
+    previous_weather_data = get_weather(previous_trips)
+
     if trip_type == 'upcoming':
         return render(request, "trips/upcoming_trips.html", {
             "upcoming_trips": upcoming_trips,
-            "weather_data": weather_data
+            "weather_data": upcoming_weather_data
         })
     elif trip_type == 'previous':
         return render(request, "trips/previous_trips.html", {
             "previous_trips": previous_trips,
-            "weather_data": weather_data
+            "weather_data": previous_weather_data
         })
     else:
         return render(request, "trips/all_trips.html", {
