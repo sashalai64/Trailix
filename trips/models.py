@@ -253,6 +253,9 @@ class Trip(models.Model):
     end_date = models.DateField()
     country = models.CharField(max_length=100, choices=country_list)
     city = models.CharField(max_length=50)
+    lat = models.FloatField()
+    lng = models.FloatField()
+    wikiId = models.CharField(max_length=50)
     notes = models.TextField(blank=True, null=True)
     create_time = models.DateTimeField(auto_now=True)
 

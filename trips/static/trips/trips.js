@@ -1,3 +1,4 @@
+
 // Get countdown for upcoming trips
 document.addEventListener('DOMContentLoaded', function() {
     function startCountdown() {
@@ -35,6 +36,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Autocomplete for city in forms.py
 $(document).ready(function() {
+    // Disable the submit button initially until the user selects a city from autocomplete
+    $('#submit-button').prop('disabled', true);
+
     $('#city-input').autocomplete({
         source: function(request, response) {
             var countryCode = $('#country-input').val();
@@ -55,15 +59,23 @@ $(document).ready(function() {
                 method: 'GET',
                 success: function(responseData) {
                     console.log(responseData);
-
+                    
                     // Populate the cities array with city names from the response
-                    let cities = [];
-                    responseData.data.forEach(function(city) {
-                        cities.push(city.name);
-                    });
-
-                    // Send the cities array to the autocomplete
-                    response(cities);
+                    if (responseData && responseData.data && Array.isArray(responseData.data)){
+                        let cities = [];
+                        responseData.data.forEach(function(city) {
+                            cities.push({
+                                label: city.name,
+                                value: city.name,
+                                wikiId: city.wikiDataId,
+                                lat: city.latitude, 
+                                lng: city.longitude 
+                            });
+                        });
+                        response(cities);
+                    } else {
+                        console.error("Expected an array but got:", responseData);
+                    }
                 },
                 error: function(xhr, status, error) {
                     console.error("Error fetching cities:", error);
@@ -73,9 +85,32 @@ $(document).ready(function() {
         minLength: 3,
         delay: 200,
         select: function(event, ui) {
-            // Set the selected value to the city input field
+            // Set the selected value to the input fields
             $('#city-input').val(ui.item.value);
+            $('#wikiId-input').val(ui.item.wikiId);
+            $('#lat-input').val(ui.item.lat);
+            $('#lng-input').val(ui.item.lng);
+
+            console.log("Longitude:", ui.item.lat);
+            console.log("Latitude:", ui.item.lng);
+            console.log("wikiId:", ui.item.wikiId);
+
+            // Enable the submit button since a city has been selected
+            $('#submit-button').prop('disabled', false);
+
             return false;
+        }
+    });
+
+    // Re-disable the submit button if the user clears the input
+    $('#city-input').on('input', function() {
+        if ($(this).val().trim() === '') {
+            $('#submit-button').prop('disabled', true);
+
+            // clear the hidden fields if necessary
+            $('#wikiId-input').val('');
+            $('#lat-input').val('');
+            $('#lng-input').val('');
         }
     });
 });

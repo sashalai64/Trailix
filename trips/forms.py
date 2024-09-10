@@ -6,12 +6,15 @@ class TripForm(forms.ModelForm):
 
     class Meta:
         model = Trip
-        fields = ["country", "city", "start_date", "end_date", "notes"]
+        fields = ["country", "city", "start_date", "end_date", "lat", "lng", "wikiId", "notes"]
         widgets = {
             "country": forms.Select(attrs={'class': 'form-control', 'id': 'country-input'}),
             "city": forms.TextInput(attrs={'class': 'form-control', 'id': 'city-input'}),
             "start_date": forms.TextInput(attrs={'class': 'form-control datepicker'}),
             "end_date": forms.TextInput(attrs={'class': 'form-control datepicker'}),
+            "lat": forms.HiddenInput(attrs={'id': 'lat-input'}),
+            "lng": forms.HiddenInput(attrs={'id': 'lng-input'}),
+            "wikiId": forms.HiddenInput(attrs={'id': 'wikiId-input'}),
             'notes': forms.Textarea(attrs={'class': 'form-control'}),
         }
     
@@ -19,10 +22,11 @@ class TripForm(forms.ModelForm):
         cleaned_data = super().clean()
         start_date = cleaned_data.get("start_date")
         end_date = cleaned_data.get("end_date")
-        
+
         if start_date and end_date and start_date > end_date:
             self.add_error("end_date", "End date cannot be earlier than the start date.")
         
+
         return cleaned_data
     
     #save a country as its name instead of its code

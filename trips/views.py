@@ -178,6 +178,7 @@ def add_trip(request):
         
         else:
             return render(request, "trips/add_trip.html", {
+                "message": "Please select a city from the dropdown menu.",
                 "form": form
             })
 
