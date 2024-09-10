@@ -19,7 +19,7 @@
                         <div class="col-md-8">
                             <div class="card-body text-center"> <!-- Added text-center to align contents -->
                                 <h3 class="card-title">{{ upcoming.country }}</h3>
-                                <h6 class="card-title">{{ upcoming.city }}</h6>
+                                <h5 class="card-title">{{ upcoming.city }}</h5>
                                 <p class="card-text mt-3">{{ upcoming.start_date }} - {{ upcoming.end_date }}</p>
                                 <p class="card-text mt-3">{{ upcoming.notes }}</p>
             
@@ -42,6 +42,10 @@
                                         {% endif %}
                                     {% endwith %}
                                 {% endif %}
+
+                                 <p class="timezone-text mt-4">
+                                    <strong>{{ upcoming.timezone }}</strong> 
+                                </p>
                                 
                                 <h5 class="card-text countdown-text mt-3">
                                     Time left until trip: <span id="countdown-{{ upcoming.id }}"></span>

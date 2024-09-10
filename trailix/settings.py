@@ -26,6 +26,7 @@ load_dotenv(find_dotenv())
 SECRET_KEY = os.environ['SECRET_KEY']
 RAPID_GEODB_API_KEY = os.environ['RAPID_GEODB_API_KEY']
 RAPID_WEATHER_API_KEY = os.environ['RAPID_WEATHER_API_KEY']
+GOOGLE_CLOUD_API_KEY = os.environ['GOOGLE_CLOUD_API_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

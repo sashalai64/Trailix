@@ -19,7 +19,7 @@
                         <div class="col-md-8">
                             <div class="card-body text-center"> <!-- Added text-center to align contents -->
                                 <h3 class="card-title">{{ previous.country }}</h3>
-                                <h6 class="card-title">{{ previous.city }}</h6>
+                                <h5 class="card-title">{{ previous.city }}</h5>
                                 <p class="card-text mt-3">{{ previous.start_date }} - {{ previous.end_date }}</p>
                                 <p class="card-text mt-3">{{ previous.notes }}</p>
             
@@ -42,6 +42,10 @@
                                         {% endif %}
                                     {% endwith %}
                                 {% endif %}
+
+                                <p class="timezone-text mt-4">
+                                    <strong>{{ previous.timezone }}</strong> 
+                                </p>
                             </div>
                         </div>
                     </div>

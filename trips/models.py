@@ -256,6 +256,7 @@ class Trip(models.Model):
     lat = models.FloatField()
     lng = models.FloatField()
     wikiId = models.CharField(max_length=50)
+    timezone = models.CharField(max_length=255, blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
     create_time = models.DateTimeField(auto_now=True)
 

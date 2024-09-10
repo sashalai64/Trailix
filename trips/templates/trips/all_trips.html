@@ -8,16 +8,16 @@
 
 <a href="{% url 'trips' %}?type=upcoming"><h2>Upcoming Trips</h2></a>
 
-<div class="container mt-3">
+<div class="container mt-5">
     <div class="row">
         {% for upcoming in upcoming_trips %}
             <div class="col-md-12 mb-4">
                 <div class="card shadow-sm">
-                    <div class="row no-gutters">
+                    <div class="row no-gutters justify-content-center">
                         <div class="col-md-8">
-                            <div class="card-body">
+                            <div class="card-body text-center"> 
                                 <h3 class="card-title">{{ upcoming.country }}</h3>
-                                <h6 class="card-title">{{ upcoming.city }}</h6>
+                                <h5 class="card-title">{{ upcoming.city }}</h5>
                                 <p class="card-text mt-3">{{ upcoming.start_date }} - {{ upcoming.end_date }}</p>
                                 <p class="card-text mt-3">{{ upcoming.notes }}</p>
                             </div>
@@ -29,18 +29,20 @@
     </div>
 </div>
 
+
+
 <a href="{% url 'trips' %}?type=previous"><h2 class="mt-5">Previous Trips</h2></a>
 
-<div class="container mt-3">
+<div class="container mt-5">
     <div class="row">
         {% for previous in previous_trips %}
             <div class="col-md-12 mb-4">
                 <div class="card shadow-sm">
-                    <div class="row no-gutters">
+                    <div class="row no-gutters justify-content-center"> 
                         <div class="col-md-8">
-                            <div class="card-body">
+                            <div class="card-body text-center">
                                 <h3 class="card-title">{{ previous.country }}</h3>
-                                <h6 class="card-title">{{ previous.city }}</h6>
+                                <h5 class="card-title">{{ previous.city }}</h5>
                                 <p class="card-text mt-3">{{ previous.start_date }} - {{ previous.end_date }}</p>
                                 <p class="card-text mt-3">{{ previous.notes }}</p>
                             </div>

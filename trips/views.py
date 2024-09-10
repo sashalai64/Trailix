@@ -9,6 +9,9 @@ from django.utils import timezone
 import requests
 from django.conf import settings
 from django.core.cache import cache
+import time
+from datetime import datetime
+import pytz
 
 from .models import *
 from .forms import *
@@ -135,11 +138,16 @@ def get_weather(trips):
 def trips(request):
     trip_type = request.GET.get('type')
     today = timezone.now().date()
-    previous_trips = Trip.objects.filter(user = request.user, end_date__lt = today).order_by('-start_date')
     upcoming_trips = Trip.objects.filter(user = request.user, end_date__gte = today).order_by('-start_date')
+    previous_trips = Trip.objects.filter(user = request.user, end_date__lt = today).order_by('-start_date')
     
     upcoming_weather_data = get_weather(upcoming_trips)
     previous_weather_data = get_weather(previous_trips)
+
+    for trip in upcoming_trips:
+        trip.timezone = get_timezone(trip.lat, trip.lng)
+    for trip in previous_trips:
+        trip.timezone = get_timezone(trip.lat, trip.lng)
 
     if trip_type == 'upcoming':
         return render(request, "trips/upcoming_trips.html", {
@@ -204,3 +212,31 @@ def get_cities(request):
 
     response = requests.get(url, headers=headers, params=querystring)
     return JsonResponse(response.json())
+
+
+def convert_to_timezone(timeZoneId):
+    #Get the current UTC time
+    utc_time = datetime.now(pytz.utc)
+    
+    #Convert UTC time to the target timezone
+    target_time =  pytz.timezone(timeZoneId)
+    local_time = utc_time.astimezone(target_time)
+
+    #Return the formatted local date and time ('YYYY-MM-DD HH:MM:SS')
+    return local_time.strftime('%Y-%m-%d %H:%M:%S')
+
+
+def get_timezone(lat, lng):
+    api_key = settings.GOOGLE_CLOUD_API_KEY
+    timestamp = int(time.time())
+    url = f"https://maps.googleapis.com/maps/api/timezone/json?location={lat},{lng}&timestamp={timestamp}&key={api_key}"
+
+    #API call
+    response = requests.get(url)
+    timezone_data = response.json()
+
+    if timezone_data['status'] == "OK":
+        local_time = convert_to_timezone(timezone_data['timeZoneId'])
+        return local_time
+    else:
+        return timezone_data['status']

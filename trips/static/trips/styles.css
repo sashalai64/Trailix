@@ -128,7 +128,22 @@
 /* Countdown text */
 .countdown-text {
     font-weight: bold;
-    color: #27ae60;
+    color:darkgoldenrod;
     font-size: 18px;
     margin-top: 20px;
+}
+
+/* Timezone */
+.timezone-text {
+    background-color: #f8f9fa; 
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 1rem;
+    color: #495057; 
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.timezone-text strong {
+    color: #007bff;
 }
