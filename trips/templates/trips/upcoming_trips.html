@@ -43,9 +43,11 @@
                                     {% endwith %}
                                 {% endif %}
 
-                                 <p class="timezone-text mt-4">
-                                    <strong>{{ upcoming.timezone }}</strong> 
-                                </p>
+                                <div class="trip-timezone" data-trip-id="{{ upcoming.id }}" data-raw-offset="{{ upcoming.timezone }}">
+                                    <p id="time-{{ upcoming.id }}" class="trip-timezone">
+                                        <span id="local-time-{{ upcoming.id }}"></span>
+                                    </p>
+                                </div>
                                 
                                 <h5 class="card-text countdown-text mt-3">
                                     Time left until trip: <span id="countdown-{{ upcoming.id }}"></span>

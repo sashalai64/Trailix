@@ -43,9 +43,11 @@
                                     {% endwith %}
                                 {% endif %}
 
-                                <p class="timezone-text mt-4">
-                                    <strong>{{ previous.timezone }}</strong> 
-                                </p>
+                                <div class="trip-timezone" data-trip-id="{{ previous.id }}" data-raw-offset="{{ previous.timezone }}">
+                                    <p id="time-{{ previous.id }}" class="trip-timezone">
+                                        <span id="local-time-{{ previous.id }}"></span>
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>

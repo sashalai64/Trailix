@@ -227,16 +227,20 @@ def convert_to_timezone(timeZoneId):
 
 
 def get_timezone(lat, lng):
-    api_key = settings.GOOGLE_CLOUD_API_KEY
-    timestamp = int(time.time())
-    url = f"https://maps.googleapis.com/maps/api/timezone/json?location={lat},{lng}&timestamp={timestamp}&key={api_key}"
+    cache_key = f"timezone_{lat}_{lng}"
+    timezone_data = cache.get(cache_key)
 
-    #API call
-    response = requests.get(url)
-    timezone_data = response.json()
+    if not timezone_data:
+        api_key = settings.GOOGLE_CLOUD_API_KEY
+        timestamp = int(time.time())
+        url = f"https://maps.googleapis.com/maps/api/timezone/json?location={lat},{lng}&timestamp={timestamp}&key={api_key}"
+
+        #API call
+        response = requests.get(url)
+        timezone_data = response.json()
+        cache.set(cache_key, timezone_data, timeout = 86400)  # Cache for 24 hour
 
     if timezone_data['status'] == "OK":
-        local_time = convert_to_timezone(timezone_data['timeZoneId'])
-        return local_time
+        return timezone_data['rawOffset']
     else:
         return timezone_data['status']

@@ -114,3 +114,39 @@ $(document).ready(function() {
         }
     });
 });
+
+
+//Update local time without refreshing the page
+document.addEventListener('DOMContentLoaded', function() {
+    function updateLocalTime(tripId, rawOffset) {
+        const now = new Date();
+        const localTime = new Date(now.getTime() + (rawOffset * 1000));
+
+        //Update the local time display
+        document.getElementById(`local-time-${tripId}`).innerText = localTime.toLocaleString();
+    }
+
+    function startUpdatingLocalTimes() {
+        const trips = document.querySelectorAll('.trip-timezone');
+
+        trips.forEach(tripElement => {
+            const tripId = tripElement.getAttribute('data-trip-id');
+            const rawOffset = parseInt(tripElement.getAttribute('data-raw-offset'), 10);
+
+            //Fetch and update the local time initially
+            if (!isNaN(rawOffset)) {
+                updateLocalTime(tripId, rawOffset);
+            }
+
+            //Set up periodic updates every second
+            setInterval(() => {
+                if (!isNaN(rawOffset)) {
+                    updateLocalTime(tripId, rawOffset);
+                }
+            }, 1000);
+        });
+    }
+
+    //Initial call to start updating local times
+    startUpdatingLocalTimes();
+});
