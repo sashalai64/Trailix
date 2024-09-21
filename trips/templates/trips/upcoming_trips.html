@@ -20,6 +20,7 @@
                             <div class="card-body text-center"> <!-- Added text-center to align contents -->
                                 <h3 class="card-title">{{ upcoming.country }}</h3>
                                 <h5 class="card-title">{{ upcoming.city }}</h5>
+                                <a href="{% url 'edit_trip' upcoming.id%}">edit</a>
                                 <p class="card-text mt-3">{{ upcoming.start_date }} - {{ upcoming.end_date }}</p>
                                 <p class="card-text mt-3">{{ upcoming.notes }}</p>
             

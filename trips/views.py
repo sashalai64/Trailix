@@ -12,6 +12,7 @@ from django.core.cache import cache
 import time
 from datetime import datetime
 import pytz
+from django.shortcuts import get_object_or_404
 
 from .models import *
 from .forms import *
@@ -244,3 +245,24 @@ def get_timezone(lat, lng):
         return timezone_data['rawOffset']
     else:
         return timezone_data['status']
+
+
+@login_required
+def edit_trip(request, tripId):
+    trip = get_object_or_404(Trip, id = tripId, user = request.user)
+
+    if request.method == 'POST':
+        form = TripForm(request.POST, instance=trip)
+        if form.is_valid():
+            edited_trip = form.save(commit=False)
+            edited_trip.user = request.user
+            edited_trip.save()
+            return redirect('trips')
+        
+    else:
+        form = TripForm(instance=trip)
+    
+    return render(request, 'trips/edit_trip.html', {
+        'form': form,
+        'trip': trip
+    })
