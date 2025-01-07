@@ -1,4 +1,3 @@
-
 // Get countdown for upcoming trips
 document.addEventListener('DOMContentLoaded', function() {
     function startCountdown() {
@@ -7,11 +6,27 @@ document.addEventListener('DOMContentLoaded', function() {
         trips.forEach(tripElement => {
             const tripId = tripElement.getAttribute('data-trip-id');
             const startDate = tripElement.getAttribute('data-trip-start');
-            const countDownDate = new Date(startDate).getTime();
+            const rawOffset = parseInt(tripElement.getAttribute('data-raw-offset'), 10) || 0; // Default offset as 0
+
+            //console.log(`Trip ID: ${tripId}, Start Date: ${startDate}, Raw Offset: ${rawOffset}`);
+
+            if (!startDate || isNaN(rawOffset)) {
+                console.error(`Invalid start date or offset for trip ID: ${tripId}`);
+                return;
+            }
+    
+            // Adjust start date to local time using raw offset
+            const countDownDate = new Date(new Date(startDate).getTime() + rawOffset * 1000);
+
+            // Log the startDate and countDownDate
+            console.log(`Trip ID: ${tripId}`);
+            console.log(`Start Date (raw): ${startDate}`);
+            console.log(`Countdown Date (timestamp): ${countDownDate}`);
+            console.log(`Countdown Date (readable): ${new Date(countDownDate)}`);
 
             function updateCountdown() {
                 const now = new Date().getTime();
-                const distance = countDownDate - now;
+                const distance = countDownDate.getTime() - now;
 
                 if (distance > 0) {
                     const days = Math.floor(distance / (1000 * 60 * 60 * 24));

@@ -238,6 +238,7 @@ def get_timezone(lat, lng):
 
         #API call
         response = requests.get(url)
+        #print(response.json())
         timezone_data = response.json()
         cache.set(cache_key, timezone_data, timeout = 86400)  # Cache for 24 hour
 
