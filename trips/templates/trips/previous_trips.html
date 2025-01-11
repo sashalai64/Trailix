@@ -4,6 +4,14 @@
 
 {% block body %}
 
+<script>
+    const pageType = 'previous-trips';
+</script>
+
+<script id="trips-data" type="application/json">
+    {{ json_trips|safe }}
+</script>
+
 <div>
     <a class="btn btn-custom" href="{% url 'add_trip' %}">Add Trips</a>
 </div>

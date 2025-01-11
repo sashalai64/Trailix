@@ -13,6 +13,7 @@ import time
 from datetime import datetime
 import pytz
 from django.shortcuts import get_object_or_404
+from django.core.serializers import serialize
 
 from .models import *
 from .forms import *
@@ -156,9 +157,12 @@ def trips(request):
             "weather_data": upcoming_weather_data
         })
     elif trip_type == 'previous':
+        json_trips = serialize('json', previous_trips, fields=('city', 'country', 'lat', 'lng', 'start_date'))
+        print(json_trips)
         return render(request, "trips/previous_trips.html", {
             "previous_trips": previous_trips,
-            "weather_data": previous_weather_data
+            "weather_data": previous_weather_data,
+            'json_trips': json_trips
         })
     else:
         return render(request, "trips/all_trips.html", {

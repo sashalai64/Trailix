@@ -147,3 +147,7 @@
 .timezone-text strong {
     color: #007bff;
 }
+
+#map { 
+    height: 250px; 
+}
