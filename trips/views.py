@@ -14,6 +14,7 @@ from datetime import datetime
 import pytz
 from django.shortcuts import get_object_or_404
 from django.core.serializers import serialize
+import re
 
 from .models import *
 from .forms import *
@@ -86,7 +87,8 @@ def get_weather(trips):
     
     for trip in trips:
         if trip.city not in fetched_cities:
-            cache_key = f"weather_{trip.city}"
+            sanitized_city = re.sub(r"[^a-zA-Z0-9_]", "_", trip.city)  # Replace invalid characters with '_'
+            cache_key = f"weather_{sanitized_city}"
             weather = cache.get(cache_key)
 
             if not weather:
@@ -158,7 +160,7 @@ def trips(request):
         })
     elif trip_type == 'previous':
         json_trips = serialize('json', previous_trips, fields=('city', 'country', 'lat', 'lng', 'start_date'))
-        print(json_trips)
+        #print(json_trips)
         return render(request, "trips/previous_trips.html", {
             "previous_trips": previous_trips,
             "weather_data": previous_weather_data,
