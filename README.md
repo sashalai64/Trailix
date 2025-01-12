@@ -1,6 +1,5 @@
 # Trailix
 
-## Overview
 Trailix is a travel management web application designed to help users plan, track, and manage their trips seamlessly. Built using Django for the backend and JavaScript for dynamic front-end functionality, Trailix enables users to organize their travel itineraries and explore features like weather updates, countdown timers, city suggestions, and interactive maps.
 
 ## Features
@@ -47,8 +46,8 @@ Trailix is a travel management web application designed to help users plan, trac
 ## Installation
 1. **Clone the Repository**
       ```
-      git clone https://github.com/sashalai64/trailix.git
-      cd trailix 
+      git clone https://github.com/sashalai64/Trailix.git
+      cd Trailix 
       ```
       
 2. **Set up environment variables**
@@ -74,6 +73,7 @@ Trailix is a travel management web application designed to help users plan, trac
       ```
 
 5. **Access the Application**
+
     Visit `http://127.0.0.1:8000/` in your browser.
 
 ## Usage
