@@ -11,13 +11,10 @@ if (currentPageType === 'upcoming-trips'){
                 const startDate = tripElement.getAttribute('data-trip-start');
                 const rawOffset = parseInt(tripElement.getAttribute('data-raw-offset'), 10) || 0; // Default offset as 0
 
-                //console.log(`Trip ID: ${tripId}, Start Date: ${startDate}, Raw Offset: ${rawOffset}`);
                 // Log the startDate and countDownDate
                 console.log(`Trip ID: ${tripId}`);
                 console.log(`Start Date (raw): ${startDate}`);
                 console.log(`Offset Time: ${rawOffset}`);
-                console.log(`Countdown Date (timestamp): ${countDownDate}`);
-                console.log(`Countdown Date (readable): ${new Date(countDownDate)}`);
 
                 if (!startDate || isNaN(rawOffset)) {
                     console.error(`Invalid start date or offset for trip ID: ${tripId}`);
@@ -26,6 +23,7 @@ if (currentPageType === 'upcoming-trips'){
         
                 // Adjust start date to local time using raw offset
                 const countDownDate = new Date(new Date(startDate).getTime() + rawOffset * 1000);
+                console.log(`Countdown Date (timestamp): ${countDownDate}`);
 
                 function updateCountdown() {
                     const now = new Date().getTime();
@@ -147,11 +145,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function startUpdatingLocalTimes() {
-        const trips = document.querySelectorAll('.trip-timezone');
+        const trips = document.querySelectorAll('[data-trip-id]');
 
         trips.forEach(tripElement => {
             const tripId = tripElement.getAttribute('data-trip-id');
             const rawOffset = parseInt(tripElement.getAttribute('data-raw-offset'), 10);
+
+            // Log the startDate and Offset
+            console.log(`Trip ID: ${tripId}`);
+            console.log(`Offset Time: ${rawOffset}`);
 
             //Fetch and update the local time initially
             if (!isNaN(rawOffset)) {

@@ -17,7 +17,7 @@
 <div class="container mt-5">
     <div class="row">
         {% for upcoming in upcoming_trips %}
-            <div class="col-md-12 mb-4" data-trip-id="{{ upcoming.id }}" data-trip-start="{{ upcoming.start_date }}">
+            <div class="col-md-12 mb-4" data-trip-id="{{ upcoming.id }}" data-trip-start="{{ upcoming.start_date }}" data-raw-offset="{{ upcoming.timezone }}">
                 <div class="card shadow-sm">
                     <div class="row no-gutters justify-content-center"> <!-- Added justify-content-center -->
                         <div class="col-md-8">
@@ -48,10 +48,8 @@
                                     {% endwith %}
                                 {% endif %}
 
-                                <div class="trip-timezone" data-trip-id="{{ upcoming.id }}" data-raw-offset="{{ upcoming.timezone }}">
-                                    <p id="time-{{ upcoming.id }}" class="trip-timezone">
-                                        <span id="local-time-{{ upcoming.id }}"></span>
-                                    </p>
+                                <div class="trip-timezone">
+                                    <span id="local-time-{{ upcoming.id }}"></span>
                                 </div>
                                 
                                 <h5 class="card-text countdown-text mt-3" data-raw-offset="{{ upcoming.timezone }}">
