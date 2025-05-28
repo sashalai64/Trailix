@@ -109,8 +109,8 @@ $(document).ready(function() {
             $('#lat-input').val(ui.item.lat);
             $('#lng-input').val(ui.item.lng);
 
-            console.log("Longitude:", ui.item.lat);
-            console.log("Latitude:", ui.item.lng);
+            console.log("Longitude:", ui.item.lat); 
+            console.log("Latitude:", ui.item.lng); 
             console.log("wikiId:", ui.item.wikiId);
 
             // Enable the submit button since a city has been selected

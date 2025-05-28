@@ -1,153 +1,703 @@
-/* Basic layout styles */
+/* Modern Dark Theme Variables */
+:root {
+    --bg-primary: #0a0a0a;
+    --bg-secondary: #111111;
+    --bg-tertiary: #1a1a1a;
+    --bg-card: #161616;
+    --text-primary: #ffffff;
+    --text-secondary: #a1a1a1;
+    --text-muted: #6b7280;
+    --accent: #3b82f6;
+    --accent-hover: #2563eb;
+    --accent-green: #22c55e;
+    --border: #262626;
+    --border-hover: #404040;
+    --shadow: rgba(0, 0, 0, 0.5);
+    --gradient: linear-gradient(135deg, var(--accent), #8b5cf6);
+}
+
+/* Force dark background globally */
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    background-color: var(--bg-primary) !important;
+    background: var(--bg-primary) !important;
+}
+
+/* Override any Bootstrap white backgrounds */
+.container, .container-fluid {
+    background-color: transparent !important;
+}
+
+.row {
+    background-color: transparent !important;
+}
+
+[class*="col-"] {
+    background-color: transparent !important;
+}
+
+/* Force all potential white elements to be dark */
+div, section, main, article, aside, header, footer, nav {
+    background-color: transparent !important;
+}
+
+/* Ensure no white backgrounds anywhere */
+* {
+    background-color: transparent !important;
+}
+
+/* But restore specific elements that need backgrounds */
+.navbar, .navbar-expand-lg, .navbar-light, .bg-light {
+    background-color: var(--bg-secondary) !important;
+    background: var(--bg-secondary) !important;
+}
+
+.card {
+    background-color: var(--bg-card) !important;
+}
+
+.welcome-hero {
+    background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%) !important;
+}
+
+.feature-box {
+    background-color: var(--bg-card) !important;
+}
+
+.weather-info {
+    background-color: var(--bg-tertiary) !important;
+}
+
+.form-control {
+    background-color: var(--bg-tertiary) !important;
+}
+
+.countdown-text {
+    background-color: var(--bg-tertiary) !important;
+}
+
+.timezone-text, .trip-timezone {
+    background-color: var(--bg-tertiary) !important;
+}
+
+body {
+    background-color: var(--bg-primary) !important;
+    color: var(--text-primary) !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif !important;
+    line-height: 1.6;
+    font-size: 16px;
+    margin: 0;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+    background-color: var(--bg-primary) !important;
+}
+
+/* Bootstrap Navbar Styling - Force Dark */
 .navbar {
-    margin-bottom: 20px;
+    background-color: var(--bg-secondary) !important;
+    background: var(--bg-secondary) !important;
+    border-bottom: 1px solid var(--border) !important;
+    padding: 1rem 0 !important;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar.bg-light {
+    background-color: var(--bg-secondary) !important;
+    background: var(--bg-secondary) !important;
+}
+
+.navbar-light {
+    background-color: var(--bg-secondary) !important;
+    background: var(--bg-secondary) !important;
+}
+
+/* Force navbar to be dark regardless of Bootstrap classes */
+.navbar, .navbar-expand-lg, .navbar-light, .bg-light {
+    background-color: var(--bg-secondary) !important;
+    background: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
 }
 
 .navbar-brand {
-    font-weight: bold;
+    font-size: 1.75rem !important;
+    font-weight: 800;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.025em;
 }
 
 .navbar-nav .nav-link {
-    margin-right: 15px;
+    color: var(--text-secondary) !important;
+    font-weight: 500;
+    padding: 0.75rem 1rem !important;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    margin: 0 0.25rem;
+    position: relative;
 }
 
-.navbar-nav .nav-link:last-child {
-    margin-right: 0;
+.navbar-nav .nav-link:hover {
+    color: var(--accent) !important;
+    background-color: var(--bg-tertiary);
 }
 
+.navbar-nav .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--gradient);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.navbar-nav .nav-link:hover::after {
+    width: 80%;
+}
+
+/* Bootstrap Dropdown */
+.dropdown-menu {
+    background-color: var(--bg-tertiary) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 20px 40px var(--shadow) !important;
+    padding: 0.75rem 0 !important;
+    margin-top: 0.5rem !important;
+}
+
+.dropdown-item {
+    color: var(--text-secondary) !important;
+    padding: 0.75rem 1.25rem !important;
+    transition: all 0.2s ease;
+    font-size: 0.95rem;
+}
+
+.dropdown-item:hover {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Layout */
 .body {
-    padding: 20px;
+    padding: 2rem 1rem;
+    min-height: calc(100vh - 80px);
 }
 
-.body .container {
-    max-width: 960px;
-    margin: 0 auto;
-}
-
-/* Card styles */
-.card {
-    transition: transform 0.3s ease;
-    border-radius: 2ex;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-}
-
-.card-title {
-    font-weight: bold;
-}
-
-.card-body {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
-
-.card-text {
-    color: #555;
-}
-
-/* Container width */
 .container {
     max-width: 1200px;
+    margin: 0 auto;
 }
 
-/* Hero section styles */
+/* Hero Section */
 .welcome-hero {
-    background-size: cover;
-    background-position: center;
-    padding: 50px 0;
-    color: white;
-    height: 60vh;
+    background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+    border-radius: 20px;
+    padding: 5rem 3rem;
+    text-align: center;
+    margin-bottom: 4rem;
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
 }
 
-.welcome-hero .hero-content {
+.welcome-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 30% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.hero-content {
     max-width: 700px;
     margin: 0 auto;
-    background: cadetblue;
-    padding: 30px;
-    border-radius: 15px;
+    position: relative;
+    z-index: 1;
 }
 
-/* Feature box */
-.feature-box {
-    text-align: center;
-    margin-bottom: 30px;
+.hero-content h1 {
+    font-size: 3.5rem;
+    font-weight: 900;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
 }
 
-/* Button styles */
-.btn-custom {
-    background-color: cadetblue;
+.hero-content .lead {
+    font-size: 1.3rem;
+    color: var(--text-secondary);
+    margin-bottom: 2.5rem;
+    line-height: 1.5;
+}
+
+/* Buttons - Make them highly visible */
+.btn {
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
     border: none;
-    color: white;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-    margin-bottom: 30px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--accent) !important;
+    color: white !important;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn-primary {
+    background: var(--gradient) !important;
+    color: white !important;
+    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 40px rgba(59, 130, 246, 0.4);
+    color: white !important;
+}
+
+.btn-secondary {
+    background-color: var(--bg-tertiary) !important;
+    color: var(--text-primary) !important;
+    border: 2px solid var(--border) !important;
+}
+
+.btn-secondary:hover {
+    background-color: var(--border-hover) !important;
+    border-color: var(--border-hover) !important;
+    color: var(--text-primary) !important;
+    transform: translateY(-2px);
+}
+
+.btn-custom {
+    background: var(--gradient) !important;
+    color: white !important;
+    margin-bottom: 2rem;
+    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.3);
 }
 
 .btn-custom:hover {
-    background-color: cornflowerblue;
+    transform: translateY(-2px);
+    box-shadow: 0 15px 40px rgba(59, 130, 246, 0.4);
+    color: white !important;
 }
 
 .btn-view {
-    background-color: aliceblue;
-    transition: background-color 0.3s ease;
+    background-color: var(--bg-card) !important;
+    color: var(--text-primary) !important;
+    border: 2px solid var(--border) !important;
 }
 
 .btn-view:hover {
-    background-color: lightblue;
+    background-color: var(--border-hover) !important;
+    color: var(--text-primary) !important;
+    transform: translateY(-2px);
 }
 
-/* Weather info styles */
-.weather-info {
-    margin: 20px auto;
-    padding: 10px;
-    border: 1px solid #ecf0f1;
-    border-radius: 5px;
-    background-color: #ecf0f1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    max-width: 300px;
+.btn-lg {
+    padding: 1.25rem 2.5rem;
+    font-size: 1.1rem;
+}
+
+.btn-block {
     width: 100%;
+    display: block;
+}
+
+/* Cards */
+.card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--gradient);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.card:hover::before {
+    opacity: 1;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 25px 50px var(--shadow);
+    border-color: var(--border-hover);
+}
+
+.card-body {
+    padding: 2.5rem;
+    text-align: center;
+}
+
+.card-title {
+    color: var(--text-primary);
+    font-weight: 700;
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.card-title:nth-child(2) {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.card-text {
+    color: var(--text-secondary);
+    margin: 1rem 0;
+    line-height: 1.6;
+}
+
+/* Feature Boxes */
+.feature-box {
+    text-align: center;
+    padding: 2.5rem 1.5rem;
+    background-color: var(--bg-card);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+    margin-bottom: 2rem;
+}
+
+.feature-box:hover {
+    transform: translateY(-4px);
+    border-color: var(--border-hover);
+    box-shadow: 0 20px 40px var(--shadow);
+}
+
+.feature-box h4 {
+    color: var(--text-primary);
+    font-weight: 700;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+}
+
+.feature-box p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* Forms */
+.form-control {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    background-color: var(--bg-tertiary);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--accent);
+    background-color: var(--bg-secondary);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.form-control::placeholder {
+    color: var(--text-muted);
+}
+
+/* Submit button disabled state */
+#submit-button:disabled {
+    background-color: var(--text-muted) !important;
+    cursor: not-allowed !important;
+    opacity: 0.5 !important;
+}
+
+#submit-button:disabled:hover {
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* jQuery UI Autocomplete Styling */
+.ui-autocomplete {
+    background-color: var(--bg-tertiary) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 10px 40px var(--shadow) !important;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 99999 !important;
+    font-family: inherit !important;
+    padding: 0.5rem 0 !important;
+    margin: 2px 0 0 0 !important;
+}
+
+.ui-menu-item .ui-menu-item-wrapper {
+    padding: 0.75rem 1rem !important;
+    color: var(--text-secondary) !important;
+    background-color: transparent !important;
+    border: none !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease;
+    font-size: 0.95rem !important;
+}
+
+.ui-menu-item .ui-menu-item-wrapper:hover,
+.ui-menu-item .ui-menu-item-wrapper.ui-state-active,
+.ui-menu-item .ui-menu-item-wrapper.ui-state-focus {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Bootstrap Datepicker Styling */
+.datepicker {
+    background-color: var(--bg-tertiary) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 10px 40px var(--shadow) !important;
+}
+
+.datepicker td, .datepicker th {
+    color: var(--text-secondary) !important;
+    border: none !important;
+}
+
+.datepicker td.active, .datepicker td.active:hover {
+    background-color: var(--accent) !important;
+    color: white !important;
+}
+
+.datepicker td:hover {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+}
+
+.datepicker .dow, .datepicker .month {
+    color: var(--text-primary) !important;
+    font-weight: 600 !important;
+}
+
+/* Weather & Trip Info */
+.weather-info {
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 2rem auto;
+    max-width: 320px;
+    text-align: center;
 }
 
 .weather-info p {
-    margin: 5px 0; /* Adjust margin for better spacing */
-    font-size: 18px;
-    color: #576889;
+    margin: 0.75rem 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-primary);
 }
 
-/* Countdown text */
 .countdown-text {
-    font-weight: bold;
-    color:darkgoldenrod;
-    font-size: 18px;
-    margin-top: 20px;
+    font-weight: 700;
+    color: var(--accent-green);
+    font-size: 1.2rem;
+    margin-top: 2rem;
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    border-radius: 12px;
 }
 
-/* Timezone */
-.timezone-text {
-    background-color: #f8f9fa; 
-    padding: 8px;
-    border-radius: 4px;
-    font-size: 1rem;
-    color: #495057; 
+.timezone-text, .trip-timezone {
+    background-color: var(--bg-tertiary);
+    color: var(--text-secondary);
+    padding: 1rem 1.25rem;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    margin-top: 1.5rem;
     display: inline-block;
-    margin-top: 10px;
+    border: 1px solid var(--border);
+    font-weight: 500;
 }
 
-.timezone-text strong {
-    color: #007bff;
+.timezone-text strong, .trip-timezone strong {
+    color: var(--text-primary);
 }
 
-#map { 
-    height: 250px; 
+/* Alerts */
+.alert {
+    padding: 1.25rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    border: none;
+    font-weight: 500;
+}
+
+.alert-info {
+    background-color: rgba(59, 130, 246, 0.1);
+    color: var(--accent);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+/* Map */
+#map {
+    height: 400px;
+    border-radius: 16px;
+    margin-bottom: 3rem;
+    border: 1px solid var(--border);
+    overflow: hidden;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-primary);
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+h2 {
+    font-size: 2.25rem;
+    margin-bottom: 2rem;
+    letter-spacing: -0.02em;
+}
+
+/* Links */
+a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: var(--accent-hover);
+    text-decoration: none;
+}
+
+.card-body a {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+    display: inline-block;
+}
+
+.card-body a:hover {
+    background-color: var(--border-hover);
+    color: var(--text-primary);
+    transform: translateY(-1px);
+}
+
+/* Auth Cards */
+.card.shadow-lg {
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 20px;
+    box-shadow: 0 25px 50px var(--shadow) !important;
+}
+
+/* Bootstrap Grid System Compatibility */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -15px;
+}
+
+.col-md-4,
+.col-md-8,
+.col-md-12 {
+    padding: 0 15px;
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .col-md-4 {
+        flex: 0 0 33.333%;
+        max-width: 33.333%;
+    }
+    .col-md-8 {
+        flex: 0 0 66.667%;
+        max-width: 66.667%;
+    }
+    .col-md-12 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
+
+    .hero-content .lead {
+        font-size: 1.1rem;
+    }
+
+    .body {
+        padding: 2rem 1rem;
+    }
+
+    .welcome-hero {
+        padding: 3rem 2rem;
+    }
+
+    .card-body {
+        padding: 2rem;
+    }
+
+    .feature-box {
+        padding: 2rem 1.5rem;
+    }
 }
